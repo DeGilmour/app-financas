@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-
+  
     <p>Fique atento para não ficar no vermelho!</p>
-
+    <div id="search">
     <table>
       <tr>
         <td>Receitas: </td>
@@ -20,6 +20,8 @@
         <td>R$500</td>
       </tr>
     </table>
+    </div>
+    
 
     <div class="btn-links">
       <nav>
@@ -30,29 +32,93 @@
       </nav>
     </div>
 
-    <div class="form">
-      <form>
-        <input type="text" placeholder="Digite aqui o valor">
-        <input type="text" placeholder="Digite aqui a razão">
+    <div class="dados">
+   <div v-for="nome in nome" v-bind:key="nome.id" >
+    <h1>{{nome.id}}</h1>
+   </div>
+  </div>
+
+  <div id="app-vue">
+      <form @submit="formSubmit">
+        <input type="text" v-model="quantidade" placeholder="Digite aqui o valor">
+        <input type="text" v-model="nome" placeholder="Digite aqui a razão">
         <label for="data">Até quando?</label>
         <input type="date">
 
-        <button>Cadastrar</button>
+        <button type="submit" >Cadastrar</button>
       </form>
-    </div>
+  </div>
+    
 
   </div>
 </template>
-
+<script type="text/javascript" src="https://www.turnjs.com/lib/turn.min.js "></script> 
 <script>
-// @ is an alias to /src
-
+const axios = require('axios')
 export default {
-  name: 'Home',
-  components: {
-  }
+  data() {
+      return {
+        nome: {
+
+        },
+     }
+ },
+
+created: function() {
+  this.getVal();
+},
+
+methods: {
+    getVal: function(){
+    axios.get('http://localhost:3000/lista')
+    .then(function(res){
+        console.log(res);
+        console.log(res.data.results);
+        this.nome = res.data.results;
+    })
+    .catch(function(err){
+        console.log(err);
+    })
+}
+  },
 }
 </script>
+<script>
+
+const axios = require('axios')
+
+// axios.get('http://localhost:3000/lista')
+//   .then((response) => {
+//     console.log(response.data)
+//   });
+ export default {
+        mounted() {
+            console.log('Component mounted.')
+        },
+        data() {
+            return {
+              nome: '',
+              quantidade : ''
+            };
+        },
+        methods: {
+            formSubmit(e) {
+                e.preventDefault();
+                let currentObj = this;
+                this.axios.post('http://localhost:3000/lista-add', {
+                    nome: this.nome,
+                    quantidade : this.quantidade
+                })
+                .then(function (response) {
+                    currentObj.output = response.data;
+                })
+                .catch(function (error) {
+                    currentObj.output = error;
+                });
+            }
+        }
+    }
+// </script>
 
 <style>
 .home{
