@@ -26,7 +26,7 @@ function createTable(conn){
     
 }
 function alterTable(conn){
-  const sql = "alter table exists Grana dt_fim date";   
+  const sql = "alter table if not exists Grana add dt_fim date";   
   conn.query(sql, function (error, results, fields){
       if(error) return console.log(error);
       console.log('the table has been altered!');
