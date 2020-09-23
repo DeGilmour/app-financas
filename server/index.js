@@ -1,3 +1,4 @@
+
 const express = require('express');
 const cors = require('cors')
 const app = express();
@@ -32,17 +33,28 @@ const connection = mysql.createConnection({
 connection.connect(function(err){
     if(err) return console.log(err);
     add(connection);
-    Search(connection);
+    Despesas(connection);
   })
   
 // //search
-function Search(conn){
+function Despesas(conn){
 router.get('/lista', (req, res) =>{
     let filter = '';
-    filter = ' WHERE ID=' + 1;
-    query = 'SELECT * FROM Grana' + filter;
+    // filter = ' WHERE ID=' + 2;
+    // query = 'SELECT * FROM Grana' + filter;
+    query = 'SELECT * FROM Grana';
     conn.query(query, function (error, results, fields){
         if(error) return console.log(error);
+        //Pego o nome das rows do sql
+        var result;
+        Object.keys(results).forEach(function(key) {
+          var rows = results[key];
+          var dt_fim = rows.dt_fim;
+          const controller = require('./controller');
+          result = controller.transformDate(dt_fim)
+          rows.dt_fim = result;
+        });
+        console.log(results)
         return res.send(results);
     });
 })
@@ -57,8 +69,9 @@ function add(conn){
         console.log(req.body.nome, req.body.quantidade, req.body.id);
         const nome = req.body.nome;
         const quantidade = req.body.quantidade;
+        const dt_fim = req.body.dt_fim;
         const id = req.body.id;
-        const query = `INSERT INTO Grana(nome, quantidade) VALUES('${nome}','${quantidade}')`;
+        const query = `INSERT INTO Grana(nome, quantidade, dt_fim) VALUES('${nome}','${quantidade}','${dt_fim}')`;
         conn.query(query, function (error, results, fields){
             if(error) return console.log(error);
             console.log('insert was made!');

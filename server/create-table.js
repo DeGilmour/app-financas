@@ -12,6 +12,7 @@ connection.connect(function(err){
   if(err) return console.log(err);
   console.log('Nice!');
   createTable(connection);
+  alterTable(connection);
 })
 
 
@@ -23,4 +24,11 @@ function createTable(conn){
           console.log('the table has been made!');
       });
     
+}
+function alterTable(conn){
+  const sql = "alter table exists Grana dt_fim date";   
+  conn.query(sql, function (error, results, fields){
+      if(error) return console.log(error);
+      console.log('the table has been altered!');
+  });
 }
