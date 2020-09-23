@@ -50,9 +50,17 @@ router.get('/lista', (req, res) =>{
         Object.keys(results).forEach(function(key) {
           var rows = results[key];
           var dt_fim = rows.dt_fim;
+          var valor = rows.quantidade;
+          if (dt_fim!=null){
           const controller = require('./controller');
-          result = controller.transformDate(dt_fim)
-          rows.dt_fim = result;
+          dt_fim_tratada = controller.transformDate(dt_fim,valor)
+          rows.dt_fim = dt_fim_tratada[4];
+          rows.dia = dt_fim_tratada[0];
+          rows.mes = dt_fim_tratada[1];
+          rows.valor_dia = dt_fim_tratada[3];
+          rows.valor_mes = dt_fim_tratada[2];
+          console.log(rows.dt_fim);
+          }
         });
         console.log(results)
         return res.send(results);

@@ -35,8 +35,8 @@
   
   <div id="app-vue">
       <form @submit="formSubmit">
-        <input type="text" v-model="quantidade" placeholder="Digite aqui o valor">
-        <input type="text" v-model="nome" placeholder="Digite aqui a razão">
+        <input type="text" style="width: 200px;" v-model="nome" placeholder="Digite aqui o nome do objetivo">
+        <input type="text" style="width: 200px;" v-model="quantidade" placeholder="Digite aqui o valor">
         <label for="data">Até quando?</label>
         <input type="date" v-model="dt_fim" >
 

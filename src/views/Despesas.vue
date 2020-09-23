@@ -8,6 +8,8 @@
             <p>Nome do Objetivo : {{value.nome}}</p>
             <span>Valor do Objetivo : R${{value.quantidade}}</span>
             <span>Data prevista para o termino : {{value.dt_fim}}</span>
+            <span>Meses para o termino : {{value.mes}} e valor mensal : R${{value.valor_mes}}</span>
+            <span>Dias para o termino : {{value.dia}} e valor diario : R${{value.valor_dia}}</span>
             
             <ul>
                 <li><button class="btn-editar">Editar</button></li>
