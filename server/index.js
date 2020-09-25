@@ -34,19 +34,17 @@ connection.connect(function(err){
     if(err) return console.log(err);
     add(connection);
     Despesas(connection);
+    Update(connection);
+    Del(connection);
   })
   
 // //search
 function Despesas(conn){
 router.get('/lista', (req, res) =>{
-    let filter = '';
-    // filter = ' WHERE ID=' + 2;
-    // query = 'SELECT * FROM Grana' + filter;
     query = 'SELECT * FROM Grana';
     conn.query(query, function (error, results, fields){
         if(error) return console.log(error);
         //Pego o nome das rows do sql
-        var result;
         Object.keys(results).forEach(function(key) {
           var rows = results[key];
           var dt_fim = rows.dt_fim;
@@ -59,18 +57,40 @@ router.get('/lista', (req, res) =>{
           rows.mes = dt_fim_tratada[1];
           rows.valor_dia = dt_fim_tratada[3];
           rows.valor_mes = dt_fim_tratada[2];
-          console.log(rows.dt_fim);
           }
         });
-        console.log(results)
         return res.send(results);
     });
 })
 }
-// //del
-// router.delete('/lista/:id', (req, res) =>{
-//     execSQLQuery('DELETE FROM Grana WHERE ID=' + parseInt(req.params.id), res);
-// })
+function Update(conn){
+  router.post('/lista-up', (req, res) =>{
+    const nome = req.body.nome;
+    const quantidade = parseInt(req.body.quantidade);
+    const dt_fim = req.body.dt_fim;
+    console.log("Data" + dt_fim);
+    const id = req.body.id;
+    query = `update Grana set nome = '${nome}', quantidade = '${quantidade}' , dt_fim = '${dt_fim}' where id=`+ id;
+    conn.query(query, function (error, results, fields){
+        if(error) return console.log(error);
+        console.log('update  was made!');
+    });
+    return res.redirect('/Home');
+});
+}
+//del
+function Del(conn){
+router.post('/lista-del', (req, res) =>{
+    const id = req.body.id;
+    console.log("id"+ req.value);
+    query = 'delete from  Grana WHERE id =' + id;
+    conn.query(query, function (error, results, fields){
+      if(error) return console.log(error);
+      console.log('delete  was made!');
+  });
+  return res.redirect('/Home');
+});
+}
 //add
 function add(conn){
     router.post('/lista-add', (req, res) =>{
@@ -79,11 +99,11 @@ function add(conn){
         const quantidade = req.body.quantidade;
         const dt_fim = req.body.dt_fim;
         const id = req.body.id;
-        const query = `INSERT INTO Grana(nome, quantidade, dt_fim) VALUES('${nome}','${quantidade}','${dt_fim}')`;
+        const query = `insert into Grana(nome, quantidade, dt_fim) values('${nome}','${quantidade}','${dt_fim}')`;
         conn.query(query, function (error, results, fields){
             if(error) return console.log(error);
             console.log('insert was made!');
         });
-        return res.redirect('/Home');
+        return res.redirect('/Despesas');
     });
 }

@@ -25,14 +25,12 @@ function calculaValor(date,valor){
     var vals_lista = [];
     vals_lista.push(diff_dias);
     vals_lista.push(diff_mes);
-    console.log("valor" + valor);
     var valor_mes = valor/diff_mes;
     valor_mes = (Math.round(valor_mes * 100) / 100).toFixed(2);
     var valor_dia = valor/diff_dias;
     valor_dia = (Math.round(valor_dia * 100) / 100).toFixed(2);
     vals_lista.push(valor_mes);
     vals_lista.push(valor_dia);
-    console.log(vals_lista);
     return vals_lista;
 
 }
